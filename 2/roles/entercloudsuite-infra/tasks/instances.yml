@@ -1,0 +1,23 @@
+---
+- name: Create the keypair with the supplied public key
+  os_keypair:
+    name: "DemoKeypair"
+    public_key_file: "{{ playbook_dir }}/key.pub"
+    state: present
+
+- name: Create the instance
+  os_server:
+    name: "DemoInstance"
+    image: "{{ vm_image }}"
+    key_name: "DemoKeypair"
+    auto_ip: no
+    flavor: "e3standard.x2"
+    network: "{{ demo_network.network.name }}"
+    security_groups: [ "DemoSecGroup" ]
+    timeout: 600
+    state: present
+
+- name: Add a floating ip to the instance
+  os_floating_ip:
+    server: "DemoInstance"
+    state: present

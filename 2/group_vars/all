@@ -1,0 +1,2 @@
+net_cidr: "192.168.250.0/24"
+vm_image: "6a1e4c2b-d663-492a-a828-205f4b28d9e0" # Ubuntu 16.04

@@ -1,0 +1,5 @@
+- name: my_beautiful_but_useless_playbook
+  hosts: 127.0.0.1
+  tasks:
+     - name: Say hello to the humans
+       debug: msg="Hello humans! :D"

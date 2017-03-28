@@ -1,0 +1,14 @@
+---
+- name: Create the security group
+  os_security_group:
+    name: "DemoSecGroup"
+    description: "The demo security group"
+    state: present
+
+- name: Allow all TCP ports
+  os_security_group_rule:
+    security_group: "DemoSecGroup"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0

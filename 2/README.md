@@ -1,3 +1,7 @@
+# Link alle slide del corso
+
+https://docs.google.com/presentation/d/1kYOHZcpNRV2c1ylVdPPN_k4ChYSFxLLX1pjtx8I28As/edit?usp=sharing
+
 # Come utilizzare questo repository 
 
 Generare una chiave SSH:

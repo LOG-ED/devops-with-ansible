@@ -2,7 +2,7 @@
 ---
 
 Questo repository contiene i sorgenti dei diversi esempi mostrati durante il corso.
-I numeri identificano l'incontro nel quale è stato mostrato l'esempio.
+I numeri identificano l'incontro nel quale è stato mostrato l'esempio, in ogni cartella si trovano le guide README per eseguire i vari esempi.
 
 ### Docente: Jacopo Secchiero
 - jsecchiero@enter.eu  

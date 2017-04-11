@@ -1,0 +1,3 @@
+- name: Add repository Haproxy
+  apt_repository: repo='ppa:vbernat/haproxy-1.6' state=present
+

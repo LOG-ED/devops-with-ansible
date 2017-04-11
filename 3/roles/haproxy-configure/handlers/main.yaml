@@ -1,0 +1,13 @@
+# Handlers for Haproxy
+
+- name: restart haproxy
+  service: name=haproxy state=restarted
+
+- name: reload haproxy
+  service: name=haproxy state=reloaded
+
+- name: restart postfix
+  service: name=postfix state=restarted
+
+- name: update repository
+  apt: update_cache=yes

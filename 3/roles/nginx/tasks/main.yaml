@@ -1,0 +1,4 @@
+---
+
+- name: install nginx
+  apt: name=nginx force=yes update_cache=yes

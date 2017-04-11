@@ -1,0 +1,5 @@
+---
+
+haproxy_webport: 8282
+haproxy_webuser: admin
+haproxy_webpass: training

@@ -1,0 +1,4 @@
+---
+
+- name: install mywebsite
+  template: src=home.html dest=/var/www/html/

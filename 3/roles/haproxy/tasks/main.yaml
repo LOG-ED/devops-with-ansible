@@ -1,0 +1,11 @@
+- include: repo.yaml
+
+#- name: Install Postfix
+#  apt: name=postfix state=present
+
+#- name: Configure Postfix
+#  template: src=main.cf.j2 dest=/etc/postfix/main.cf
+#  notify: restart postfix
+
+- name: Install Haproxy 1.6
+  apt: name=haproxy state=present

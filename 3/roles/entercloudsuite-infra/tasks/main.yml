@@ -1,0 +1,5 @@
+---
+- include: network.yml
+- include: secgroups.yml
+- include: instances.yml
+

@@ -1,0 +1,13 @@
+---
+
+- name: Install haproxy
+  hosts: lbs
+  roles:
+     - haproxy
+     - haproxy-configure
+
+- name: Install nginx
+  hosts: webs
+  roles:
+     - nginx
+     - mywebsite

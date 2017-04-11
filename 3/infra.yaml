@@ -1,0 +1,6 @@
+---
+
+- name: DevOps with Ansible episode II
+  hosts: 127.0.0.1
+  roles:
+     - entercloudsuite-infra

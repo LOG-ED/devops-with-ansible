@@ -1,0 +1,78 @@
+global
+	log /dev/log	local0 warning
+	chroot /var/lib/haproxy
+	stats socket /run/haproxy/admin.sock mode 660 level admin
+	stats timeout 30s
+	user haproxy
+	group haproxy
+	daemon
+	maxconn 25000
+
+	ca-base /etc/ssl/certs
+	crt-base /etc/ssl/private
+
+	ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
+	ssl-default-bind-options no-sslv3
+	tune.ssl.default-dh-param 2048
+
+defaults
+        log     global
+        mode    http
+        option  dontlognull
+        timeout connect 8000
+        timeout client  60000
+        timeout server  60000
+        errorfile 400 /etc/haproxy/errors/400.http
+        errorfile 403 /etc/haproxy/errors/403.http
+        errorfile 408 /etc/haproxy/errors/408.http
+        errorfile 500 /etc/haproxy/errors/500.http
+        errorfile 502 /etc/haproxy/errors/502.http
+        errorfile 503 /etc/haproxy/errors/503.http
+        errorfile 504 /etc/haproxy/errors/504.http
+
+
+listen Stats
+ 	bind *:{{ haproxy_webport }}
+ 	mode http
+ 	option httpchk
+ 	balance roundrobin
+ 	stats uri     /
+ 	stats refresh 10s
+ 	stats realm   Haproxy\ Statistics
+ 	stats hide-version
+ 	stats show-desc "HAProxy WebStatistics"
+ 	stats show-node
+	stats show-legends
+ 	stats auth {{ haproxy_webuser }}:{{ haproxy_webpass }}
+ 	stats admin if TRUE
+
+frontend web-http
+        bind *:80
+        mode http
+        maxconn 25000
+        default_backend default-http
+
+frontend web-https
+        bind *:80
+        mode http
+	option http-server-close
+	option forwardfor
+	reqadd X-Forwarded-Proto:\ https
+	reqadd X-Forwarded-Port:\ 443
+	# set HTTP Strict Transport Security (HTST) header
+	rspadd  Strict-Transport-Security:\ max-age=15768000
+        maxconn 25000
+
+backend default-http
+        mode http
+        balance roundrobin
+        option tcpka
+        #option splice-response
+        #option splice-request
+        option forwardfor
+        maxconn 25000
+	#option httpchk get /check.php
+	http-check expect status 200
+        {% for webserver in groups['webs'] %}
+        server web-{{ webserver }}-http {{ webserver }}:80 check port 80 inter 5000 rise 1 fall 2 maxconn 5000
+        {% endfor %}

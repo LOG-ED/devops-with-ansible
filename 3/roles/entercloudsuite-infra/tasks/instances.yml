@@ -1,0 +1,48 @@
+---
+- name: Create the keypair with the supplied public key
+  os_keypair:
+    name: "infra"
+    public_key_file: "{{ playbook_dir }}/key.pub"
+    state: present
+
+- name: Create the instance
+  os_server:
+    name: "{{ item }}"
+    image: "{{ vm_image }}"
+    key_name: "infra"
+    auto_ip: no
+    flavor: "e3standard.x2"
+    network: "{{ demo_network.network.name }}"
+    security_groups: [ "DemoSecGroup" ]
+    timeout: 600
+    state: present
+  with_items: "{{ lbs }}"
+
+- name: Add a floating ip to the instance lbs
+  os_floating_ip:
+    server: "{{ item }}"
+    state: present
+    reuse: yes
+  with_items: "{{ lbs }}"
+  ignore_errors: yes
+
+- name: Create the instance
+  os_server:
+    name: "{{ item }}"
+    image: "{{ vm_image }}"
+    key_name: "infra"
+    auto_ip: no
+    flavor: "e3standard.x2"
+    network: "{{ demo_network.network.name }}"
+    security_groups: [ "DemoSecGroup" ]
+    timeout: 600
+    state: present
+  with_items: "{{ webs }}"
+
+- name: Add a floating ip to the instances webs
+  os_floating_ip:
+    server: "{{ item }}"
+    state: present
+    reuse: yes
+  with_items: "{{ webs }}"
+  ignore_errors: yes

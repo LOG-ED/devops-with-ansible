@@ -11,6 +11,20 @@ $ ssh-keygen -b 4096 -f key
 
 Impostare le variabili relative al proprio tenant nel file `os-openrc.sh` ed eseguire il seguente comando:
 ```
-$ docker run -it --rm -v $(pwd):/ansible jsecchiero/ansible-bash run.sh
+$ docker run -it --rm -v $(pwd):/ansible jsecchiero/ansible-bash
 ```
 
+Una volta dentro il container, creare l'infrastruttura
+```
+ansible-playbook infra.yaml
+```
+
+Compilare l'inventario nel file hosts e installare i prerequisiti
+```
+ansible-playbook -i hosts preprequisite.yaml
+```
+
+Installare i software haproxy e nginx con un sito dummy
+```
+ansible-playbook -i hosts main.yaml
+```
